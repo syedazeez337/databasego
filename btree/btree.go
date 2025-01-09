@@ -55,6 +55,38 @@ func (node BNode) setHeader(btype uint16, nkeys uint16) {
 // child pointers
 func (node BNode) getPtr(idx uint16) uint64 {
 	// assert(idx < node.nkeys())
-	pos := HEADER + 8 * idx
+	pos := HEADER + 8*idx
 	return binary.LittleEndian.Uint64(node[pos:])
 }
+
+func (node BNode) setPtr(idx uint16, val uint64)
+
+// offset list
+func offsetPos(node BNode, idx uint16) uint16 {
+	// assert(1 <= idx && idx <= node.nkeys())
+	return HEADER + 8*node.nkeys() + 2*(idx-1)
+}
+
+func (node BNode) getOffset(idx uint16) uint16 {
+	if idx == 0 {
+		return 0
+	}
+	return binary.LittleEndian.Uint16(node[offsetPos(node, idx):])
+}
+
+func (node BNode) setOffset(idx uint16, offset uint16)
+
+// key-values
+func (node BNode) kvPos(idx uint16) uint16 {
+	// assert(idx <= node.nkeys())
+	return HEADER + 8*node.nkeys() + 2*node.nkeys() + node.getOffset()
+}
+
+func (node BNode) getKey(idx uint16) []byte {
+	// assert(idx < node.nkeys())
+	pos := node.kvPos(idx)
+	klen := binary.LittleEndian.Uint16(node[pos:])
+	return node[pos+4:][:klen]
+}
+
+func (node BNode) getVal(idx uint16) []byte
