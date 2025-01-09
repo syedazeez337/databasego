@@ -79,7 +79,7 @@ func (node BNode) setOffset(idx uint16, offset uint16)
 // key-values
 func (node BNode) kvPos(idx uint16) uint16 {
 	// assert(idx <= node.nkeys())
-	return HEADER + 8*node.nkeys() + 2*node.nkeys() + node.getOffset()
+	return HEADER + 8*node.nkeys() + 2*node.nkeys() + node.getOffset(idx)
 }
 
 func (node BNode) getKey(idx uint16) []byte {

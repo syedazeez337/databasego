@@ -27,7 +27,7 @@ func SaveData1(path string, data []byte) error {
 }
 
 func SaveData2(path string, data []byte) error {
-	tmp := fmt.Sprintf("%s.tem.%d", path, randomInt())
+	tmp := fmt.Sprintf("%s.tmp.%d", path, randomInt())
 	fp, err := os.OpenFile(tmp, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0664)
 	if err != nil {
 		return err
